@@ -117,6 +117,21 @@ class BiDirectionalMap(Dict):
         """
         return len(self.__keys)
 
+    def keys(self):
+        """Return a generator of the keys in this :class:`BiDirectionalDict`"""
+        return (key for key in self.__keys)
+
+    def values(self):
+        """Return a generator of the values in this :class:`BiDirectionalDict`
+        """
+        return (value for value in self.__vals)
+
+    def items(self):
+        """Return a 2-tuple of the (key, value) pairs in this
+        :class:`BiDirectionalDict`
+        """
+        return ((key, value) for (key, value) in zip(self.__keys, self.__vals))
+
 
 class MultiMap(Dict):
     """A :class:`MultiMap` is a generalization of a :const:`dict` type in which
