@@ -106,7 +106,7 @@ class BiDirectionalMap(Dict):
         output = '{'
         fmt = '{}: {}, '
         for key, val in zip(self.__keys, self.__vals):
-            output += fmt.format(str(key), str(val))
+            output += fmt.format(repr(key), repr(val))
         return output[:-2] + '}'
     __repr__ = __str__
 
