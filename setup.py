@@ -56,8 +56,4 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
 
     ),
-    classifiers=[
-        'Programming Language :: Python :: 3',
-        'Topic :: Utilities :: Configuration',
-    ],
 )
