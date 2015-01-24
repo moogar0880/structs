@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+"""An assorted collection of array and list data structures"""
+
 from bisect import bisect
 from textwrap import dedent
 from collections import deque, Iterable, Sized
 
 __author__ = 'Jon Nappi'
-__all__ = ['prev', 'BaseList', 'BitArray', 'SortedList', 'CircularArray']
+__all__ = ['prev', 'BaseList', 'BitArray', 'SortedList', 'CircularArray',
+           'ParallelArray']
 
 
 def prev(iterable):
