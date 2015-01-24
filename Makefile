@@ -1,7 +1,7 @@
 .PHONY: docs
 
 dev:
-    # Install recommended dev packages
+	# Install recommended dev packages
 	pip install -U pip setuptools nose wheel
 
 test:
@@ -10,20 +10,22 @@ test:
 	nosetests tests
 
 coverage:
-    # Run the test suite with coverage enabled
+	# Run the test suite with coverage enabled
 	nosetests --verbose --with-coverage structs tests
 
 publish:
-    # Register and upload packages to PyPi
+	# Register and upload packages to PyPi, then clean up
 	python setup.py register
 	python setup.py sdist upload
-	python setup.py bdist_wheel upload
+	rm MANIFEST
+	rm -rf dist
+	rm -rf structs.egg-info
 
 docs-init:
-    # Install packages required to build documentation
+	# Install packages required to build documentation
 	pip install Sphinx
 
 docs:
-    # Build documentation
+	# Build documentation
 	cd docs && make html
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/_build/html/index.html.\n\033[0m"
