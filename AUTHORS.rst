@@ -1,4 +1,4 @@
-structures is written and maintained by Jonathan Nappi and various contributors:
+structs is written and maintained by Jonathan Nappi and various contributors:
 
 Development Lead
 ````````````````

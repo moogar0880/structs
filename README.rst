@@ -1,40 +1,40 @@
-structures
+structs
 ----------
 
-.. image:: https://pypip.in/d/structures/badge.svg?style=flat
-    :target: https://pypi.python.org/pypi/structures/
+.. image:: https://pypip.in/d/structs/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi/structs/
     :alt: Downloads
 
-.. image:: https://pypip.in/v/structures/badge.svg?style=flat
-    :target: https://pypi.python.org/pypi/structures/
+.. image:: https://pypip.in/v/structs/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi/structs/
     :alt: Latest Version
 
-.. image:: https://pypip.in/py_versions/structures/badge.svg?style=flat
-    :target: https://pypi.python.org/pypi/structures/
+.. image:: https://pypip.in/py_versions/structs/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi/structs/
     :alt: Supported Python versions
 
-.. image:: https://pypip.in/implementation/structures/badge.svg?style=flat
-    :target: https://pypi.python.org/pypi/structures/
+.. image:: https://pypip.in/implementation/structs/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi/structs/
     :alt: Supported Python implementations
 
-.. image:: https://pypip.in/status/structures/badge.svg?style=flat
-    :target: https://pypi.python.org/pypi/structures/
+.. image:: https://pypip.in/status/structs/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi/structs/
     :alt: Development Status
 
-.. image:: https://pypip.in/wheel/structures/badge.svg?style=flat
-    :target: https://pypi.python.org/pypi/structures/
+.. image:: https://pypip.in/wheel/structs/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi/structs/
     :alt: Wheel Status
 
-.. image:: https://pypip.in/egg/structures/badge.svg?style=flat
-    :target: https://pypi.python.org/pypi/structures/
+.. image:: https://pypip.in/egg/structs/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi/structs/
     :alt: Egg Status
 
-.. image:: https://pypip.in/format/structures/badge.svg?style=flat
-    :target: https://pypi.python.org/pypi/structures/
+.. image:: https://pypip.in/format/structs/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi/structs/
     :alt: Download format
 
-.. image:: https://pypip.in/license/structures/badge.svg?style=flat
-    :target: https://pypi.python.org/pypi/structures/
+.. image:: https://pypip.in/license/structs/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi/structs/
     :alt: License
 
 Python Data Structures for Humans

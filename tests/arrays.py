@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from structures.arrays import BitArray, SortedList, CircularArray
+from structs.arrays import BitArray, SortedList, CircularArray
 
 __author__ = 'Jon Nappi'
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from structures.maps import Dict, BiDirectionalMap, MultiMap
+from structs.maps import Dict, BiDirectionalMap, MultiMap
 
 __author__ = 'Jon Nappi'
 

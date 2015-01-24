@@ -3,7 +3,7 @@
 import os
 import sys
 
-import structures
+import structs
 
 if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
@@ -15,9 +15,9 @@ except ImportError:
     from distutils.core import setup
 
 packages = [
-    'structures',
-    'structures.maps',
-    'structures.arrays',
+    'structs',
+    'structs.maps',
+    'structs.arrays',
 ]
 
 requires = []
@@ -30,14 +30,14 @@ with open('LICENSE') as f:
     license_file = f.read()
 
 setup(
-    name='structures',
-    version=structures.__version__,
-    keywords=['structures', 'data structures'],
+    name='structs',
+    version=structs.__version__,
+    keywords=['structs', 'data structures'],
     long_description='\n\n'.join([readme, history, license_file]),
     description='Python Data Structures for humans.',
     author='Jon Nappi',
     author_email='moogar0880@gmail.com',
-    url='https://github.com/moogar0880/structures',
+    url='https://github.com/moogar0880/structs',
     include_package_data=True,
     install_requires=requires,
     license='Apache 2.0',

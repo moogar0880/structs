@@ -11,7 +11,7 @@ test:
 
 coverage:
     # Run the test suite with coverage enabled
-	nosetests --verbose --with-coverage structures tests
+	nosetests --verbose --with-coverage structs tests
 
 publish:
     # Register and upload packages to PyPi
