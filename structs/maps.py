@@ -190,6 +190,7 @@ class MultiMap(Dict):
                 self._append_key(key, val)
             else:
                 self[key] = val
+        return self
 
     def __setitem__(self, key, value):
         """If *key* is in this :class:`MultiMap` then
