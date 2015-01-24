@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from bisect import bisect
+from textwrap import dedent
 from collections import deque, Iterable
 
 __author__ = 'Jon Nappi'
@@ -18,6 +19,7 @@ class BaseList(list):
     """Custom :const:`list` subclass with some additional iteration
     functionality
     """
+
     def __init__(self, *args, **kwargs):
         super(BaseList, self).__init__(*args, **kwargs)
         self._iter_index = 0
@@ -34,6 +36,7 @@ class BaseList(list):
         except IndexError:
             raise StopIteration
         return result
+
     prev = __prev__
 
     def __next__(self):
@@ -44,6 +47,7 @@ class BaseList(list):
         except IndexError:
             raise StopIteration
         return result
+
     next = __next__
 
 
@@ -53,6 +57,7 @@ class BitArray(list):
     implement a simple set data structure. A bit array is effective at
     exploiting bit-level parallelism in hardware to perform operations quickly.
     """
+
     def __init__(self, iterable=()):
         """Create a new :class:`BitArray` instance"""
         # Force binary integer values
@@ -165,6 +170,7 @@ class BitArray(list):
         representation
         """
         return bool(int(self))
+
     __nonzero__ = __bool__  # py2-3 compatability
 
     def __str__(self):
@@ -172,6 +178,7 @@ class BitArray(list):
         this :class:`BitArray`
         """
         return ''.join(map(str, self))
+
     __repr__ = __str__
 
     def __iadd__(self, other):
@@ -200,6 +207,7 @@ class BitArray(list):
 
 class SortedList(list):
     """A list implementation that always maintains a sorted order"""
+
     def __init__(self, iterable=(), key=None, reverse=False):
         """Create a new :class:`SortedList`. If *iterable* is specified, it
         will be sorted using *key* and added like a sequence passed to a normal
@@ -251,6 +259,7 @@ class CircularArray(BaseList):
     broken out of. ie, you're probably going to want a :const:`return` or
     :const:`break` in a loop over a :class:`CircularArray`
     """
+
     def __next__(self):
         """Keep looping forever, if we hit an IndexError, reset index to 0"""
         try:
@@ -276,3 +285,140 @@ class CircularArray(BaseList):
             result = self[self._iter_index]
         self._iter_index -= 1
         return result
+
+
+class GapBuffer(list):
+    """https://en.wikipedia.org/wiki/Gap_buffer"""
+    pass
+
+
+class HashedArrayTree(list):
+    """https://en.wikipedia.org/wiki/Hashed_array_tree"""
+    pass
+
+
+class HeightMap(list):
+    """https://en.wikipedia.org/wiki/Heightmap"""
+    pass
+
+
+class LookupTable(list):
+    """https://en.wikipedia.org/wiki/Lookup_table"""
+    pass
+
+
+class ParallelArray(object):
+    """https://en.wikipedia.org/wiki/Parallel_array
+    Create a dynamic number of list attributes depending on a size attribute,
+    some kind of append logic that will expand a set of parameters into the
+    lists
+from structs.arrays import ParallelArray
+p = ParallelArray('Person', ['names', 'ages'])
+p.append('John Smith', 23)
+p.names.append('Johnny Appleseed')
+p.ages.append(121)
+for item in p:
+    print(item)
+    """
+
+    def __init__(self, typename, keys):
+        self.typename, self._keys = typename, keys
+        for key in self._keys:
+            setattr(self, key, [])
+        self.__generate_append()
+
+    def __generate_append(self):
+        """Handle the dynamic generation of this ParallelArray instance's
+        append method, which will be exec'd into the instances __dict__, thus
+        allowing for a per-basis append signature to be used.
+        """
+        append = dedent(r"""
+        def append(self, {args}):
+            '''Add the specified arguments to the underlying parallel lists.
+            Actual signature will vary depending on usage
+            '''
+            arg_list = [{args}]
+            for key, arg in zip(self._keys, arg_list):
+                getattr(self, key).append(arg)
+                    """
+        ).strip().format(args=', '.join(self._keys))
+        exec(append, self.__dict__)
+
+        # exec dumps a function into our dict which means it will expect `self`
+        # to be passed as an explicit arg. Since functions are "technically"
+        # descriptors, use the function's `__get__` method to bind it to our
+        # instance
+        self.append = self.append.__get__(self, self.__class__)
+
+    def __iter__(self):
+        return zip(*[getattr(self, key) for key in self._keys])
+
+    def append(self, *args, **kwargs):
+        """Add the specified arguments to the underlying parallel lists. Actual
+        signature will vary depending on usage
+        """
+        raise NotImplementedError
+
+    def extend(self, iterable):
+        """Append the logical bitwise representation of the objects in
+        *iterable*
+        """
+        for args in iterable:
+            self.append(*args)
+
+    def insert(self, index, p_object):
+        """Append the logical bitwise representation of *p_object* to *index*
+        """
+        for i, key, obj in enumerate(zip(self._keys, p_object)):
+            getattr(self, key).insert(index, obj)
+
+    def __len__(self):
+        return len(getattr(self, self._keys[0]))
+
+    def __str__(self):
+        out = '['
+        for item in self:
+            out += '{}, '.format(item)
+        return out[:-2] + ']'
+
+    __repr__ = __str__
+
+
+class SparseArray(list):
+    """https://en.wikipedia.org/wiki/Sparse_array"""
+    pass
+
+
+class SelfOrganizingList(list):
+    """https://en.wikipedia.org/wiki/Self-organizing_list"""
+    pass
+
+
+class SkipList(list):
+    """https://en.wikipedia.org/wiki/Skip_list"""
+    pass
+
+
+class UnrolledLinkList(list):
+    """https://en.wikipedia.org/wiki/Unrolled_linked_list"""
+    pass
+
+
+class XORLinkedList(list):
+    """https://en.wikipedia.org/wiki/XOR_linked_list"""
+    pass
+
+
+class DoublyConnectedEdgeList(list):
+    """https://en.wikipedia.org/wiki/Doubly_connected_edge_list"""
+    pass
+
+
+class Tree(list):
+    """https://en.wikipedia.org/wiki/Tree_(data_structure)"""
+    pass
+
+
+class Graph(Tree):
+    """https://en.wikipedia.org/wiki/Graph_(abstract_data_type)"""
+    pass

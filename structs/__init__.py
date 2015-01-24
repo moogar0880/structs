@@ -2,7 +2,7 @@
 
 version_info = (0, 0, 1)
 
-__title__ = 'structures'
+__title__ = 'structs'
 __author__ = 'Jon Nappi'
 __version__ = [int(x) for x in version_info]
 __build__ = 0x000001
