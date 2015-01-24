@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+"""An assorted collection of dict and map type data structures"""
 
 __author__ = 'Jon Nappi'
 __all__ = ['Dict', 'BiDirectionalMap', 'MultiMap']
