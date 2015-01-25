@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """An assorted collection of array and list data structures"""
-
 from bisect import bisect
 from textwrap import dedent
 from collections import deque, Iterable, Sized
 
 __author__ = 'Jon Nappi'
 __all__ = ['prev', 'BaseList', 'BitArray', 'SortedList', 'CircularArray',
-           'ParallelArray']
+           'ParallelArray', 'OrganizedList']
 
 
 def prev(iterable):
@@ -294,26 +293,6 @@ class CircularArray(BaseList):
         return result
 
 
-class GapBuffer(list):
-    """https://en.wikipedia.org/wiki/Gap_buffer"""
-    pass
-
-
-class HashedArrayTree(list):
-    """https://en.wikipedia.org/wiki/Hashed_array_tree"""
-    pass
-
-
-class HeightMap(list):
-    """https://en.wikipedia.org/wiki/Heightmap"""
-    pass
-
-
-class LookupTable(list):
-    """https://en.wikipedia.org/wiki/Lookup_table"""
-    pass
-
-
 class ParallelArray(Iterable, Sized):
     """A parallel array is a list-like data structure used for representing
     arrays of records. It keeps a separate array for each field of the record,
@@ -531,41 +510,39 @@ class ParallelArray(Iterable, Sized):
         return {k: getattr(self, k) for k in self._keys}
 
 
-class SparseArray(list):
-    """https://en.wikipedia.org/wiki/Sparse_array"""
-    pass
-
-
-class SelfOrganizingList(list):
+class OrganizedList(SortedList):
     """https://en.wikipedia.org/wiki/Self-organizing_list"""
-    pass
+    class Container:
+        def __init__(self, data=None, count=0):
+            self.data, self.count = data, count
 
+        def __str__(self):
+            return '{}:{}'.format(str(self.data), self.count)
+        __repr__ = __str__
 
-class SkipList(list):
-    """https://en.wikipedia.org/wiki/Skip_list"""
-    pass
+    def __init__(self, iterable=()):
+        iterable = [self.Container(x) for x in iterable]
+        super(OrganizedList, self).__init__(iterable, (lambda x: x.count),
+                                            reverse=False)
 
+    def insert(self, p_object, *args):
+        if not isinstance(p_object, self.Container):
+            contained = self.Container(data=p_object, count=0)
+        else:
+            contained = p_object
+        super(OrganizedList, self).insert(contained)
 
-class UnrolledLinkList(list):
-    """https://en.wikipedia.org/wiki/Unrolled_linked_list"""
-    pass
+    def __setitem__(self, key, value):
+        contained = self.Container(data=value, count=0)
+        super(OrganizedList, self).__setitem__(key, contained)
 
+    def __getitem__(self, item):
+        contained = super(OrganizedList, self).__getitem__(item)
+        contained.count += 1
+        super(OrganizedList, self).pop(self.index(contained))
+        self.insert(contained)
+        return contained.data
 
-class XORLinkedList(list):
-    """https://en.wikipedia.org/wiki/XOR_linked_list"""
-    pass
-
-
-class DoublyConnectedEdgeList(list):
-    """https://en.wikipedia.org/wiki/Doubly_connected_edge_list"""
-    pass
-
-
-class Tree(list):
-    """https://en.wikipedia.org/wiki/Tree_(data_structure)"""
-    pass
-
-
-class Graph(Tree):
-    """https://en.wikipedia.org/wiki/Graph_(abstract_data_type)"""
-    pass
+    def pop(self, index=None):
+        contained = super(OrganizedList, self).pop(index)
+        return contained.data
