@@ -1,5 +1,12 @@
 structs
-----------
+-------
+.. image:: https://travis-ci.org/moogar0880/structs.svg
+    :target: https://travis-ci.org/moogar0880/structs
+    :alt: Travis CI Status
+
+.. image:: https://landscape.io/github/moogar0880/structs/master/landscape.svg
+    :target: https://landscape.io/github/moogar0880/structs/master
+    :alt: Code Health
 
 .. image:: https://pypip.in/d/structs/badge.svg?style=flat
     :target: https://pypi.python.org/pypi/structs/
