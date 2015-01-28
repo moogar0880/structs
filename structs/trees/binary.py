@@ -4,7 +4,7 @@
 from .base import Node, Tree
 
 __author__ = 'Jon Nappi'
-__all__ = ['AATree', 'BinaryTree']
+__all__ = ['BinaryTree']
 
 
 class BinaryNode(Node):
