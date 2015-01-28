@@ -11,6 +11,7 @@ __copyright__ = 'Copyright 2015 Jonathan Nappi'
 
 try:
     from .maps import *
+    from .trees import *
     from .arrays import *
 except ImportError:  # Don't fail if we're grabbing the version for setup.py
     pass
