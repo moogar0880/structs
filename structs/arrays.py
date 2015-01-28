@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """An assorted collection of array and list data structures"""
+import inspect
+
 from bisect import bisect
 from textwrap import dedent
 from collections import deque, Iterable, Sized
@@ -39,8 +41,6 @@ class BaseList(list):
             raise StopIteration
         return result
 
-    prev = __prev__
-
     def __next__(self):
         """Handle next iteration functionality"""
         try:
@@ -49,8 +49,6 @@ class BaseList(list):
         except IndexError:
             raise StopIteration
         return result
-
-    next = __next__
 
 
 class BitArray(list):
@@ -522,25 +520,27 @@ class OrganizedList(SortedList):
 
     def __init__(self, iterable=()):
         iterable = [self.Container(x) for x in iterable]
-        super(OrganizedList, self).__init__(iterable, (lambda x: x.count),
-                                            reverse=False)
+        super().__init__(iterable, (lambda x: x.count), reverse=True)
 
     def insert(self, p_object, *args):
         if not isinstance(p_object, self.Container):
             contained = self.Container(data=p_object, count=0)
         else:
             contained = p_object
-        super(OrganizedList, self).insert(contained)
+        super().insert(contained)
 
     def __setitem__(self, key, value):
         contained = self.Container(data=value, count=0)
-        super(OrganizedList, self).__setitem__(key, contained)
+        super().__setitem__(key, contained)
 
     def __getitem__(self, item):
-        contained = super(OrganizedList, self).__getitem__(item)
-        contained.count += 1
-        super(OrganizedList, self).pop(self.index(contained))
-        self.insert(contained)
+        curframe = inspect.currentframe()
+        calframe = inspect.getouterframes(curframe, 2)
+        contained = super().__getitem__(item)
+        if calframe[1][3] != 'insert':
+            contained.count += 1
+        super().pop(self.index(contained))
+        super().insert(contained)
         return contained.data
 
     def pop(self, index=None):
