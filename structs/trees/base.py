@@ -5,6 +5,7 @@ must be implemented by all inheriting base classes
 """
 
 from abc import ABCMeta, abstractmethod
+from collections import Sized, Iterable, Container
 
 __author__ = 'Jon Nappi'
 __all__ = ['Node', 'Tree']
@@ -47,7 +48,7 @@ class Node:
         :return: :const:`True` if this :class:`Node` is a leaf, otherwise
             :const:`False`
         """
-        return not self.children
+        return not any(self.children)
 
     def has_children(self):
         """Determine if this :class:`Node` has child nodes
@@ -57,9 +58,27 @@ class Node:
         """
         return len(self.children) > 0
 
+    def __eq__(self, other):
+        """Determine equivalence between this Node and any other node
 
-class Tree(metaclass=ABCMeta):
+        :param other: The object to compare to, will be :const:`False` if
+            *other* is not an instance of :class:`Node`
+        :return: :const:`False` if *other* is not an instance of :class:`Node`
+            or if `other.data` is not equal to our `data`. :const:`True`
+            otherwise
+        """
+        if not isinstance(other, Node):
+            return False
+        return self.data == other.data
+
+    def __ne__(self, other):
+        """Return the opposite of the result of our __eq__ method"""
+        return not self.__eq__(other)
+
+
+class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
     """Abstract base Tree type"""
+
     max_size = 0
     children = []
     node_type = Node
@@ -112,10 +131,10 @@ class Tree(metaclass=ABCMeta):
         :param default: The default value to return if *key* isn't in this
             :class:`Tree`
         """
-        if self.root:
+        if self.root is not None:
             res = self._get(key, self.root)
             if res:
-                return res.data
+                return res
             else:
                 return default
         return default
@@ -156,7 +175,7 @@ class Tree(metaclass=ABCMeta):
         if self.size > 1:
             node_to_remove = self._get(key, self.root)
             if node_to_remove is not None:
-                self.remove(node_to_remove)
+                self._delete(node_to_remove)
                 self.size -= 1
             else:
                 raise KeyError('Error, key not in tree')
@@ -167,7 +186,7 @@ class Tree(metaclass=ABCMeta):
             raise KeyError('Error, key not in tree')
 
     @abstractmethod
-    def remove(self, current_node):
+    def _delete(self, current_node):
         """Abstract method is to be implemented by all inheriting subclasses,
         so the specific implementation will vary depending on the type of
         :class:`Tree`.

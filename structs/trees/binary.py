@@ -68,9 +68,9 @@ class BinaryNode(Node):
         :return: :const:`True` if this :class:`BinaryNode` has both of it's
             child nodes, otherwise :const:`False`
         """
-        return self.right_child and self.left_child
+        return self.right_child is not None and self.left_child is not None
 
-    def update(self, key, value, left, right):
+    def update(self, key, value, left=None, right=None):
         """Convenience method to update all of the values stored in this
         :class:`BinaryNode`
 
@@ -81,8 +81,8 @@ class BinaryNode(Node):
         """
         self.key = key
         self.data = value
-        self.left_child = left
-        self.right_child = right
+        self.left_child = left or self.left_child
+        self.right_child = right or self.right_child
         if self.has_left_child():
             self.left_child.parent = self
         if self.has_right_child():
@@ -211,14 +211,16 @@ class BinaryTree(Tree):
                 current_node.right_child = self.node_type(key, value,
                                                           parent=current_node)
 
-    def remove(self, node):
+    def _delete(self, node):
         """Overriden abstract method to handle the logical removal of nodes 
         from this :class:`~structs.trees.binary.BinaryTree`
-        
+
         :param node: The :class:`BinaryNode` to remove from this 
             :class:`~structs.trees.binary.BinaryTree`
         """
-        if node.is_leaf():  # leaf
+        if node == self.root and self.root.is_leaf():
+            self.root = None
+        elif node.is_leaf():  # leaf
             if node == node.parent.left_child:
                 node.parent.left_child = None
             else:
@@ -233,7 +235,7 @@ class BinaryTree(Tree):
                 if node.is_left_child():
                     node.left_child.parent = node.parent
                     node.parent.left_child = node.left_child
-                elif node.isright_child():
+                elif node.is_right_child():
                     node.left_child.parent = node.parent
                     node.parent.right_child = node.left_child
                 else:
@@ -245,7 +247,7 @@ class BinaryTree(Tree):
                 if node.is_left_child():
                     node.right_child.parent = node.parent
                     node.parent.left_child = node.right_child
-                elif node.isright_child():
+                elif node.is_right_child():
                     node.right_child.parent = node.parent
                     node.parent.right_child = node.right_child
                 else:
