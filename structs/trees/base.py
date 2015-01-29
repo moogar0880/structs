@@ -229,11 +229,17 @@ class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
         :param node: The current node we're at in our recursive traversal
         """
         if node is not None:
-            yield node.data
-            for data in self.get_preorder(node.left_child):
-                yield data
-            for data in self.get_preorder(node.right_child):
-                yield data
+            lt = [n for n in node.children
+                  if n is not None and n.key < node.key]
+            gt = [n for n in node.children
+                  if n is not None and n.key > node.key]
+            yield node
+            for n in lt:
+                for data in self.get_preorder(n):
+                    yield data
+            for n in gt:
+                for data in self.get_preorder(n):
+                    yield data
 
     @property
     def in_order(self):
@@ -248,11 +254,17 @@ class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
         :param node: The current node we're at in our recursive traversal
         """
         if node is not None:
-            for data in self.get_in_order(node.left_child):
-                yield data
-            yield node.data
-            for data in self.get_in_order(node.right_child):
-                yield data
+            lt = [n for n in node.children
+                  if n is not None and n.key < node.key]
+            gt = [n for n in node.children
+                  if n is not None and n.key > node.key]
+            for n in lt:
+                for data in self.get_in_order(n):
+                    yield data
+            yield node
+            for n in gt:
+                for data in self.get_in_order(n):
+                    yield data
 
     @property
     def postorder(self):
@@ -267,11 +279,17 @@ class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
         :param node: The current node we're at in our recursive traversal
         """
         if node is not None:
-            for data in self.get_postorder(node.left_child):
-                yield data
-            for data in self.get_postorder(node.right_child):
-                yield data
-            yield node.data
+            lt = [n for n in node.children
+                  if n is not None and n.key < node.key]
+            gt = [n for n in node.children
+                  if n is not None and n.key > node.key]
+            for n in lt:
+                for data in self.get_postorder(n):
+                    yield data
+            for n in gt:
+                for data in self.get_postorder(n):
+                    yield data
+            yield node
 
     @property
     def levelorder(self):
@@ -289,8 +307,20 @@ class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
         if node is not None:
             if more is None:
                 more = []
-            more += [node.left_child, node.right_child]
-            yield node.data
+            more += [n for n in node.children if n is not None]
+            yield node
         if more:
             for data in self.get_level_order(more[0], more[1:]):
                 yield data
+
+    def __iadd__(self, other):
+        """Concatenate this :class:`Tree` and another :class:`Tree` instance
+        together. *other* will be iterated over in `in order` format and
+        inserted node by node into this :class:`Tree`
+        """
+        if not isinstance(other, Tree):
+            msg = 'Cannot concatenate Tree and {}'.format(type(other))
+            raise TypeError(msg)
+        for node in other.in_order:
+            self.put(node.key, node.data)
+        return self
