@@ -171,8 +171,8 @@ class BinaryTreeTests(unittest.TestCase):
         self.tree[6] = 'Green'
         self.tree[2] = 'Maroon'
 
-        preorder = list(self.tree.preorder)
-        self.assertEqual(preorder, ['Root', 'Maroon', 'Blue', 'Green'])
+        data = [node.data for node in self.tree.preorder]
+        self.assertEqual(data, ['Root', 'Maroon', 'Blue', 'Green'])
 
     def test_inorder(self):
         self.tree[3] = 'Root'
@@ -180,8 +180,8 @@ class BinaryTreeTests(unittest.TestCase):
         self.tree[6] = 'Green'
         self.tree[2] = 'Maroon'
 
-        preorder = list(self.tree.in_order)
-        self.assertEqual(preorder, ['Maroon', 'Root', 'Blue', 'Green'])
+        data = [node.data for node in self.tree.in_order]
+        self.assertEqual(data, ['Maroon', 'Root', 'Blue', 'Green'])
 
     def test_postorder(self):
         self.tree[3] = 'Root'
@@ -189,8 +189,8 @@ class BinaryTreeTests(unittest.TestCase):
         self.tree[6] = 'Green'
         self.tree[2] = 'Maroon'
 
-        preorder = list(self.tree.postorder)
-        self.assertEqual(preorder, ['Maroon', 'Green', 'Blue', 'Root'])
+        data = [node.data for node in self.tree.postorder]
+        self.assertEqual(data, ['Maroon', 'Green', 'Blue', 'Root'])
 
     def test_levelorder(self):
         self.tree[3] = 'Root'
@@ -198,8 +198,8 @@ class BinaryTreeTests(unittest.TestCase):
         self.tree[6] = 'Green'
         self.tree[2] = 'Maroon'
 
-        preorder = list(self.tree.levelorder)
-        self.assertEqual(preorder, ['Root', 'Maroon', 'Blue', 'Green'])
+        data = [node.data for node in self.tree.levelorder]
+        self.assertEqual(data, ['Root', 'Maroon', 'Blue', 'Green'])
 
     def test_iter(self):
         self.tree.put(0, 'Root')
@@ -207,6 +207,21 @@ class BinaryTreeTests(unittest.TestCase):
 
         for index, item in enumerate(self.tree):
             if index == 0:
-                self.assertEqual(self.tree.root.data, item)
+                self.assertEqual(self.tree.root, item)
             else:
-                self.assertEqual(self.tree.get(1).data, item)
+                self.assertEqual(self.tree.get(1), item)
+
+    def test_iadd(self):
+        self.tree.put(0, 'Root')
+        self.tree.put(1, 'Not Root')
+
+        tree2 = BinaryTree()
+        tree2.put(3, 'Another Not Root')
+
+        self.tree += tree2
+
+        self.assertIn(3, self.tree)
+        self.assertEqual(self.tree.get(3).data, 'Another Not Root')
+
+        with self.assertRaises(TypeError):
+            self.tree += 5
