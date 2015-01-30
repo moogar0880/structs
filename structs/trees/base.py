@@ -324,6 +324,19 @@ class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
             for data in self.get_level_order(more[0], more[1:]):
                 yield data
 
+    def __add__(self, other):
+        """Combine this :class:`Tree` and another :class:`Tree` instance and
+        return a new :class:`Tree` instance matching this :class:`Tree`'s
+        actual type
+        """
+        if not isinstance(other, Tree):
+            msg = 'Cannot concatenate Tree and {}'.format(type(other))
+            raise TypeError(msg)
+        new_tree = self.__class__()
+        new_tree += self
+        new_tree += other
+        return new_tree
+
     def __iadd__(self, other):
         """Concatenate this :class:`Tree` and another :class:`Tree` instance
         together. *other* will be iterated over in `in order` format and
