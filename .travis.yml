@@ -4,7 +4,6 @@ python:
   - "3.3"
   - "3.4"
 install: pip install nose coverage coveralls --use-mirrors
-before_script: mkdir tests
 script: make test
 after_success: coveralls
 branches:
