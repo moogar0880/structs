@@ -127,18 +127,17 @@ class BinaryNode(Node):
             :class:`BinaryNode` in it's containing
             :class:`~structs.trees.binary.BinaryTree` or :const:`None`
         """
-        succ = None
+        successor = None
         if self.has_right_child():
-            succ = self.right_child.find_min()
+            successor = self.right_child.find_min()
         else:
             if self.parent:
                 if self.is_left_child():
-                    succ = self.parent
+                    successor = self.parent
                 else:
-                    self.parent.right_child = None
-                    succ = self.parent.find_successor()
-                    self.parent.right_child = self
-        return succ
+                    successor = self.parent.find_successor()
+        return successor
+    find_max = find_successor
 
     def find_min(self):
         """Find the next lowest :class:`BinaryNode` under this
@@ -212,46 +211,82 @@ class BinaryTree(Tree):
                                                           parent=current_node)
 
     def _delete(self, node):
-        """Overriden abstract method to handle the logical removal of nodes 
+        """Overriden abstract method to handle the logical removal of nodes
         from this :class:`~structs.trees.binary.BinaryTree`
 
-        :param node: The :class:`BinaryNode` to remove from this 
+        :param node: The :class:`BinaryNode` to remove from this
             :class:`~structs.trees.binary.BinaryTree`
         """
         if node == self.root and self.root.is_leaf():
             self.root = None
         elif node.is_leaf():  # leaf
-            if node == node.parent.left_child:
-                node.parent.left_child = None
-            else:
-                node.parent.right_child = None
+            self._delete_leaf(node)
         elif node.has_both_children():  # interior
-            succ = node.find_successor()
-            succ.splice_out()
-            node.key = succ.key
-            node.data = succ.data
+            self._delete_full_node(node)
         else:  # this node has one child
             if node.has_left_child():
-                if node.is_left_child():
-                    node.left_child.parent = node.parent
-                    node.parent.left_child = node.left_child
-                elif node.is_right_child():
-                    node.left_child.parent = node.parent
-                    node.parent.right_child = node.left_child
-                else:
-                    node.update(node.left_child.key,
-                                node.left_child.data,
-                                node.left_child.left_child,
-                                node.left_child.right_child)
+                self._delete_left_child(node)
             else:
-                if node.is_left_child():
-                    node.right_child.parent = node.parent
-                    node.parent.left_child = node.right_child
-                elif node.is_right_child():
-                    node.right_child.parent = node.parent
-                    node.parent.right_child = node.right_child
-                else:
-                    node.update(node.right_child.key,
-                                node.right_child.data,
-                                node.right_child.left_child,
-                                node.right_child.right_child)
+                self._delete_right_child(node)
+
+    @staticmethod
+    def _delete_leaf(node):
+        """Handle the removal of a leaf node
+
+        :param node: The node to remove. This method can only successfully be
+            called on a leaf node
+        """
+        if node == node.parent.left_child:
+            node.parent.left_child = None
+        else:
+            node.parent.right_child = None
+
+    @staticmethod
+    def _delete_full_node(node):
+        """Handle the removal of a node with two children
+
+        :param node: The node to remove. This method can only succesfully be
+            called on a node with two children
+        """
+        succ = node.find_successor()
+        succ.splice_out()
+        node.key = succ.key
+        node.data = succ.data
+
+    @staticmethod
+    def _delete_left_child(node):
+        """Handle the removal of a node that only has a left child
+
+        :param node: The node to remove. This method can only successfully be
+            called on a node that only has a left child
+        """
+        if node.is_left_child():
+            node.left_child.parent = node.parent
+            node.parent.left_child = node.left_child
+        elif node.is_right_child():
+            node.left_child.parent = node.parent
+            node.parent.right_child = node.left_child
+        else:
+            node.update(node.left_child.key,
+                        node.left_child.data,
+                        node.left_child.left_child,
+                        node.left_child.right_child)
+
+    @staticmethod
+    def _delete_right_child(node):
+        """Handle the removal of a node that only has a right child
+
+        :param node: The node to remove. This method can only successfully be
+            called on a node that only has a right child
+        """
+        if node.is_left_child():
+            node.right_child.parent = node.parent
+            node.parent.left_child = node.right_child
+        elif node.is_right_child():
+            node.right_child.parent = node.parent
+            node.parent.right_child = node.right_child
+        else:
+            node.update(node.right_child.key,
+                        node.right_child.data,
+                        node.right_child.left_child,
+                        node.right_child.right_child)

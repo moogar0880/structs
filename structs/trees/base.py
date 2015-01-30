@@ -75,6 +75,18 @@ class Node:
         """Return the opposite of the result of our __eq__ method"""
         return not self.__eq__(other)
 
+    def __gt__(self, other):
+        return self.key > other.key
+
+    def __ge__(self, other):
+        return self.key >= other.key
+
+    def __lt__(self, other):
+        return self.key < other.key
+
+    def __le__(self, other):
+        return self.key <= other.key
+
 
 class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
     """Abstract base Tree type"""
@@ -229,10 +241,8 @@ class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
         :param node: The current node we're at in our recursive traversal
         """
         if node is not None:
-            lt = [n for n in node.children
-                  if n is not None and n.key < node.key]
-            gt = [n for n in node.children
-                  if n is not None and n.key > node.key]
+            lt = [n for n in node.children if n is not None and n < node]
+            gt = [n for n in node.children if n is not None and n > node]
             yield node
             for n in lt:
                 for data in self.get_preorder(n):
@@ -254,10 +264,8 @@ class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
         :param node: The current node we're at in our recursive traversal
         """
         if node is not None:
-            lt = [n for n in node.children
-                  if n is not None and n.key < node.key]
-            gt = [n for n in node.children
-                  if n is not None and n.key > node.key]
+            lt = [n for n in node.children if n is not None and n < node]
+            gt = [n for n in node.children if n is not None and n > node]
             for n in lt:
                 for data in self.get_in_order(n):
                     yield data
@@ -279,10 +287,8 @@ class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
         :param node: The current node we're at in our recursive traversal
         """
         if node is not None:
-            lt = [n for n in node.children
-                  if n is not None and n.key < node.key]
-            gt = [n for n in node.children
-                  if n is not None and n.key > node.key]
+            lt = [n for n in node.children if n is not None and n < node]
+            gt = [n for n in node.children if n is not None and n > node]
             for n in lt:
                 for data in self.get_postorder(n):
                     yield data

@@ -33,6 +33,10 @@ class BinaryNodeTests(unittest.TestCase):
         self.assertNotEqual(self.tree.root, self.tree[1])
         self.assertEqual(self.tree.root, self.tree[0])
 
+    def test_str(self):
+        self.tree.put(0, 'Root')
+        self.assertEqual(str(self.tree.get(0)), 'Root')
+
     def test_node_update(self):
         self.tree.put(0, 'Root')
         self.assertEqual(self.tree.root.data, 'Root')
@@ -48,6 +52,42 @@ class BinaryNodeTests(unittest.TestCase):
         self.assertEqual(self.tree[3].data, 'Root')
         self.tree.get(3).update(3, 'New Root')
         self.assertEqual(self.tree[3].data, 'New Root')
+
+    def test_splice_leaf(self):
+        self.tree[3] = 'Root'
+        self.tree[5] = 'Blue'
+        self.tree[6] = 'Green'   # is right leaf
+        self.tree[4] = 'Maroon'  # is left leaf
+
+        self.tree[4].splice_out()
+        self.assertNotIn(4, self.tree)
+        self.tree[6].splice_out()
+        self.assertNotIn(6, self.tree)
+
+    def test_splice_edges(self):
+        self.tree[3] = 'Root'
+        self.tree[2] = 'Left Parent'
+        self.tree[1] = 'Left Child'
+        self.tree[5] = 'Right Parent'
+        self.tree[4] = 'Right Child'
+
+        self.tree.get(2).splice_out()
+        self.assertEqual(self.tree.root.left_child, self.tree.get(1))
+
+        self.tree.get(5).splice_out()
+        self.assertEqual(self.tree.root.right_child, self.tree.get(4))
+
+        self.tree[2] = 'Right Left Child'
+        self.tree.get(1).splice_out()
+        self.assertEqual(self.tree.root.left_child, self.tree.get(2))
+
+    def test_find_max(self):
+        self.tree[5] = 'Root'
+        self.tree[3] = 'Left Child'
+        self.tree[7] = 'Right child'
+
+        self.assertEqual(self.tree.get(3).find_max(), self.tree.root)
+        self.assertEqual(self.tree.get(7).find_max(), self.tree.get(7))
 
 
 class BinaryTreeTests(unittest.TestCase):
@@ -74,6 +114,12 @@ class BinaryTreeTests(unittest.TestCase):
         new_node = self.tree.get(1)
         self.assertIn(new_node, self.tree.root.children)
         self.assertEqual(self.tree.root, new_node.parent)
+
+    def test_put_left(self):
+        self.tree[3] = 'Root'
+        self.tree[2] = 'Left 1'
+        self.tree[1] = 'Left 2'
+        self.assertIn(1, self.tree)
 
     def test_items(self):
         self.tree[0] = 'Root'
