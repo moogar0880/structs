@@ -16,7 +16,10 @@ User Guide:
 .. toctree::
    :maxdepth: 4
 
-   structs
+   structs.arrays
+   structs.maps
+   structs.trees
+   structs.trees.binary
 
 
 Indices and tables

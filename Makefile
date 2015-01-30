@@ -2,7 +2,7 @@
 
 dev:
 	# Install recommended dev packages
-	pip install -U pip setuptools nose wheel
+	pip install -U pip setuptools nose coverage wheel
 
 test:
 	# This runs all of the tests. To run an individual test, run nosetests with
@@ -11,7 +11,7 @@ test:
 
 coverage:
 	# Run the test suite with coverage enabled
-	nosetests --verbose --with-coverage structs tests
+	nosetests --verbose --with-coverage --cover-package structs tests
 
 publish:
 	# Register and upload packages to PyPi, then clean up

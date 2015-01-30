@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+"""An assorted collection of dict and map type data structures"""
 
 __author__ = 'Jon Nappi'
 __all__ = ['Dict', 'BiDirectionalMap', 'MultiMap']
@@ -190,6 +191,7 @@ class MultiMap(Dict):
                 self._append_key(key, val)
             else:
                 self[key] = val
+        return self
 
     def __setitem__(self, key, value):
         """If *key* is in this :class:`MultiMap` then

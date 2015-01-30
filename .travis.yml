@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.3"
+  - "3.4"
+install: pip install nose coverage coveralls --use-mirrors
+script: make coverage
+after_success: coveralls
+branches:
+  only: master
