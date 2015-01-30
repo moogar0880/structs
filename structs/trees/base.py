@@ -98,7 +98,6 @@ class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
 
     #: The type of node used in this :class:`Tree`
     node_type = Node
-    children = []
 
     def __init__(self):
         """Create a new :class:`~structs.trees.base.Tree` instance"""
