@@ -170,7 +170,6 @@ class BinaryTreeTests(unittest.TestCase):
 
     def test_remove_root(self):
         self.tree.put(0, 'Root')
-        # import ipdb;ipdb.set_trace()
         self.tree.delete(self.tree.root.key)
 
     def test_remove_leaf(self):
