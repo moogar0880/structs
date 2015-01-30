@@ -3,9 +3,9 @@ python:
   - "3.2"
   - "3.3"
   - "3.4"
-install: pip install coverage coveralls --use-mirrors
+install: pip install nose coverage coveralls --use-mirrors
 before_script: mkdir tests
-script: make test && make coverage
+script: make test
 after_success: coveralls
 branches:
   only: master
