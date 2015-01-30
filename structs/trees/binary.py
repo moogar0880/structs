@@ -173,7 +173,7 @@ class BinaryTree(Tree):
         otherwise recurse to the right
 
         :param key: The key to search for
-        :param current_node: The current :class:`BinaryNode` we're attempting 
+        :param current_node: The current :class:`BinaryNode` we're attempting
             to retrieve from
         """
         if not current_node:
@@ -186,7 +186,7 @@ class BinaryTree(Tree):
             return self._get(key, current_node.right_child)
 
     def _put(self, key, value, current_node):
-        """Overriden abstract method to handle the logical insertions of new 
+        """Overriden abstract method to handle the logical insertions of new
         nodes into this :class:`~structs.trees.binary.BinaryTree`. Until we
         find the right place to insert our key value pair, recurse down to the
         left if *key* is less than *current_node*'s key attribute, otherwise
@@ -194,7 +194,7 @@ class BinaryTree(Tree):
 
         :param key: The key to search for
         :param value: The data to be inserted into the :class:`Tree`
-        :param current_node: The current :class:`BinaryNode` we're attempting 
+        :param current_node: The current :class:`BinaryNode` we're attempting
             to retrieve from
         """
         if key < current_node.key:

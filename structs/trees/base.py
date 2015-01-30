@@ -13,19 +13,19 @@ __all__ = ['Node', 'Tree']
 
 class Node:
     """A data node used to store data at a specific key value pair in a
-    :class:`~structs.trees.base.Tree`. This class also handles tracking child 
+    :class:`~structs.trees.base.Tree`. This class also handles tracking child
     and parent :class:`Node`'s.
     """
     children = []
 
     def __init__(self, key, value, parent=None):
-        """Create a new :class:`Node` instance to store *value* at *key*. Also 
-        handle registering this :class:`Node` as a child of *parent* and a 
-        parent of any of it's child :class:`Node`'s 
+        """Create a new :class:`Node` instance to store *value* at *key*. Also
+        handle registering this :class:`Node` as a child of *parent* and a
+        parent of any of it's child :class:`Node`'s
 
         :param key: The key to store *value* at
         :param value: The actual data stored in this :class:`Node`
-        :param parent: The :class:`Node` that has this :class:`Node` as a 
+        :param parent: The :class:`Node` that has this :class:`Node` as a
             child
         """
         self.key, self.data = key, value

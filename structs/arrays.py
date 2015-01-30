@@ -322,8 +322,7 @@ class ParallelArray(Iterable, Sized):
             arg_list = [{args}]
             for key, arg in zip(self._keys, arg_list):
                 getattr(self, key).append(arg)
-                    """
-        ).strip().format(args=', '.join(self._keys))
+                    """).strip().format(args=', '.join(self._keys))
         exec(append, self.__dict__)
 
         # exec dumps a function into our dict which means it will expect `self`
@@ -493,6 +492,7 @@ class ParallelArray(Iterable, Sized):
         for item in self:
             out += '{}, '.format(item)
         return out[:-2] + ']'
+
     __repr__ = __str__
 
     def as_list(self):
@@ -510,12 +510,14 @@ class ParallelArray(Iterable, Sized):
 
 class OrganizedList(SortedList):
     """https://en.wikipedia.org/wiki/Self-organizing_list"""
+
     class Container:
         def __init__(self, data=None, count=0):
             self.data, self.count = data, count
 
         def __str__(self):
             return '{}:{}'.format(str(self.data), self.count)
+
         __repr__ = __str__
 
     def __init__(self, iterable=()):
