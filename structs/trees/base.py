@@ -89,11 +89,16 @@ class Node:
 
 
 class Tree(Sized, Iterable, Container, metaclass=ABCMeta):
-    """Abstract base Tree type"""
+    """Abstract base Tree data structure type. A tree structure is used to
+    model a hierarchical collection of data
+    """
 
+    #: The maximum number of children each node can have
     max_size = 0
-    children = []
+
+    #: The type of node used in this :class:`Tree`
     node_type = Node
+    children = []
 
     def __init__(self):
         """Create a new :class:`~structs.trees.base.Tree` instance"""

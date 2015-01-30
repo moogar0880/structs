@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import unittest
-from structs.trees.binary import BinaryTree, BinaryNode
+from structs.trees.binary import BinarySearchTree, BinaryNode
 
 __author__ = 'Jon Nappi'
 
 
 class BinaryNodeTests(unittest.TestCase):
     def setUp(self):
-        self.tree = BinaryTree()
+        self.tree = BinarySearchTree()
 
     def tearDown(self):
         self.tree = None
@@ -90,9 +90,9 @@ class BinaryNodeTests(unittest.TestCase):
         self.assertEqual(self.tree.get(7).find_max(), self.tree.get(7))
 
 
-class BinaryTreeTests(unittest.TestCase):
+class BinarySearchTreeTests(unittest.TestCase):
     def setUp(self):
-        self.tree = BinaryTree()
+        self.tree = BinarySearchTree()
 
     def tearDown(self):
         self.tree = None
@@ -260,7 +260,7 @@ class BinaryTreeTests(unittest.TestCase):
         self.tree.put(0, 'Root')
         self.tree.put(1, 'Not Root')
 
-        tree2 = BinaryTree()
+        tree2 = BinarySearchTree()
         tree2.put(3, 'Another Not Root')
 
         self.tree += tree2

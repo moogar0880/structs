@@ -4,7 +4,7 @@
 from .base import Node, Tree
 
 __author__ = 'Jon Nappi'
-__all__ = ['BinaryTree']
+__all__ = ['BinaryTree', 'BinarySearchTree']
 
 
 class BinaryNode(Node):
@@ -161,13 +161,69 @@ class BinaryNode(Node):
 
 
 class BinaryTree(Tree):
+    """A :class:`~structs.trees.base.Tree` based data structure in which each
+    :class:`~structs.trees.base.Node` has at most two children.
+    """
+
+    #: The maximum number of children each node can have
     max_size = 2
+
+    #: The type of node used in this :class:`Tree`
     node_type = BinaryNode
 
     def _get(self, key, current_node):
+        """Search for the :class:`~structs.trees.base.Node` stored at *key*.
+        Because Binary Tree's aren't sorted in any way, we have to perform a
+        traversal of (potentially) the entire tree to find the node we're
+        looking for
+
+        :param key: The key our target Node is stored at
+        :param current_node: The current node in our traversal
+        """
+        for node in self.in_order:
+            if node.key == key:
+                return node
+        return None
+
+    def _put(self, key, value, current_node):
+        """Insert a new node with data of *value* at *key*. Insert into the
+        next open child slot that we can find in the tree
+
+        :param key: The key to store the new node at
+        :param value: The data for the new node
+        :param current_node: The current node we're trying to insert at
+        """
+        if not current_node.has_left_child():
+            current_node.left_child = self.node_type(key, value,
+                                                     parent=current_node)
+        elif not current_node.has_right_child():
+            current_node.right_child = self.node_type(key, value,
+                                                      parent=current_node)
+        else:
+            for node in current_node.children:
+                self._put(key, value, node)  # Order doesn't matter
+
+    def _delete(self, current_node):
+        """Since there's no specific logic required when removing from an
+        unsorted tree, we can just splice our the node we're looking to remove
+
+        :param current_node: The node to remove
+        """
+        current_node.splice_out()
+
+
+class BinarySearchTree(BinaryTree):
+    """A Binary Search Tree is a sorted Binary Tree in which each node has a
+    comparable key (and an associated value) and satisfies the restriction that
+    the key in any node is larger than the keys in all nodes in that node's
+    left sub-tree and smaller than the keys in all nodes in that node's right
+    sub-tree.
+    """
+
+    def _get(self, key, current_node):
         """Overriden abstract method to handle the logical retrieval of nodes
-        from this :class:`~structs.trees.binary.BinaryTree`. If we don't find a
-        :class:`BinaryNode` at *key*, return :const:`None`. If we find a
+        from this :class:`~structs.trees.binary.BinarySearchTree`. If we don't
+        find a :class:`BinaryNode` at *key*, return :const:`None`. If we find a
         :class:`BinaryNode`, return it. Otherwise continue searching down to
         the left if our current key is less than *current_node*'s key,
         otherwise recurse to the right
@@ -187,10 +243,10 @@ class BinaryTree(Tree):
 
     def _put(self, key, value, current_node):
         """Overriden abstract method to handle the logical insertions of new
-        nodes into this :class:`~structs.trees.binary.BinaryTree`. Until we
-        find the right place to insert our key value pair, recurse down to the
-        left if *key* is less than *current_node*'s key attribute, otherwise
-        recurse to the right
+        nodes into this :class:`~structs.trees.binary.BinarySearchTree`. Until
+        we find the right place to insert our key value pair, recurse down to
+        the left if *key* is less than *current_node*'s key attribute,
+        otherwise recurse to the right
 
         :param key: The key to search for
         :param value: The data to be inserted into the :class:`Tree`
@@ -212,10 +268,10 @@ class BinaryTree(Tree):
 
     def _delete(self, node):
         """Overriden abstract method to handle the logical removal of nodes
-        from this :class:`~structs.trees.binary.BinaryTree`
+        from this :class:`~structs.trees.binary.BinarySearchTree`
 
         :param node: The :class:`BinaryNode` to remove from this
-            :class:`~structs.trees.binary.BinaryTree`
+            :class:`~structs.trees.binary.BinarySearchTree`
         """
         if node == self.root and self.root.is_leaf():
             self.root = None
