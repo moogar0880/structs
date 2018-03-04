@@ -8,19 +8,19 @@ structs
     :target: https://coveralls.io/r/moogar0880/structs
     :alt: Coverage
 
-.. image:: https://pypip.in/d/structs/badge.svg?style=flat
+.. image:: https://img.shields.io/pypi/dm/structs.svg?style=flat
     :target: https://pypi.python.org/pypi/structs/
     :alt: Downloads
 
-.. image:: https://pypip.in/v/structs/badge.svg?style=flat
+.. image:: https://img.shields.io/pypi/v/structs.svg?style=flat
     :target: https://pypi.python.org/pypi/structs/
     :alt: Latest Version
 
-.. image:: https://pypip.in/py_versions/structs/badge.svg?style=flat
+.. image:: https://img.shields.io/pypi/pyversions/structs.svg?style=flat
     :target: https://pypi.python.org/pypi/structs/
     :alt: Supported Python versions
 
-.. image:: https://pypip.in/license/structs/badge.svg?style=flat
+.. image:: https://img.shields.io/pypi/l/structs.svg?style=flat
     :target: https://pypi.python.org/pypi/structs/
     :alt: License
 
